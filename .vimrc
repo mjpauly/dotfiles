@@ -1,4 +1,6 @@
-syntax on
+execute pathogen#infect()
+
+syntax enable
 
 set hlsearch
 set number ruler relativenumber
@@ -13,4 +15,9 @@ set tabstop=4 softtabstop=4 expandtab shiftwidth=4 smarttab smartindent autoinde
 " Press Space to turn off highlighting and clear any message already displayed
 nnoremap <silent> <Space> :nohlsearch<Bar>:echo<CR>
 
-:inoremap jj <Esc>
+inoremap jj <Esc>
+
+" Tmux Solarized color settings
+" set background=dark
+" colorscheme solarized
+" silent! colorscheme solarized " Silence errors in case it isn't installed yet
