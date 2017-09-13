@@ -23,3 +23,6 @@ inoremap jj <Esc>
 " Bind <C-k> to comment visually selected blocks with '#' and <C-u> to uncomment
 vnoremap <silent> <C-k> :s/^/#/<cr>:noh<cr>
 vnoremap <silent> <C-u> :s/^#//<cr>:noh<cr>
+
+" Highlight the end of the max line length
+set cc=81
