@@ -4,12 +4,12 @@ execute pathogen#infect()
 syntax enable
 
 set hlsearch
-set number ruler relativenumber
+set number ruler
 set wrap linebreak
 
 " Remap j and k to move to the line directly below/above even with linewrap on
-nmap j gj
-nmap k gk
+nnoremap j gj
+nnoremap k gk
 
 " Tab behavior settings (tab = 4 spaces)
 set tabstop=4 softtabstop=4 expandtab shiftwidth=4 smarttab smartindent autoindent
@@ -25,4 +25,4 @@ vnoremap <silent> <C-k> :s/^/#/<cr>:noh<cr>
 vnoremap <silent> <C-u> :s/^#//<cr>:noh<cr>
 
 " Highlight the end of the max line length
-set cc=81
+" set cc=81
