@@ -1,6 +1,7 @@
 " Load plugins
 execute pathogen#infect()
 
+filetype indent plugin on
 syntax enable
 
 set hlsearch
@@ -16,6 +17,7 @@ set tabstop=4 softtabstop=4 expandtab shiftwidth=4 smarttab smartindent autoinde
 
 " Press Space to turn off highlighting and clear any message already displayed
 nnoremap <silent> <Space> :nohlsearch<Bar>:echo<CR>
+set incsearch
 
 " Bind jj to escape while in insert mode
 inoremap jj <Esc>
