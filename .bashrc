@@ -12,3 +12,5 @@ alias config='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
 
 # add to .bash_profile:
 # [[ -s ~/.bashrc ]] && source ~/.bashrc
+
+export PS1="\[$(tput bold)\]\[$(tput setaf 2)\][\u@\h \W]\\$ \[$(tput sgr0)\]"
