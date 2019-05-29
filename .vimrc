@@ -1,5 +1,5 @@
 " Load plugins
-" execute pathogen#infect()
+execute pathogen#infect()
 
 filetype indent plugin on
 syntax enable
@@ -13,7 +13,8 @@ nnoremap j gj
 nnoremap k gk
 
 " Tab behavior settings (tab = 4 spaces)
-set tabstop=4 softtabstop=4 expandtab shiftwidth=4 smarttab
+set expandtab shiftwidth=4 smarttab
+" set tabstop=4 softtabstop=4 " testing with this off - <Tabs> will count as 8 spaces
 " Cause indenting issues for special filetypes:
 " smartindent autoindent
 
@@ -42,6 +43,15 @@ set autochdir
 set tags=tags;
 
 set mouse=a
+
+" Remove some indent keys
+autocmd FileType python setlocal indentkeys-=<:>
+autocmd FileType python setlocal indentkeys-=:
+
+" Underline the current line for easier cursor visibility
+set cursorline
+
+" More involved scripts borrowed from Stack Overflow below =============
 
 " bind C-c and C-v to copy to and paste from the system buffer
 " in visual and insert mode respectively
@@ -74,6 +84,7 @@ let s:comment_map = {
     \   "ahk": ';',
     \   "vim": '"',
     \   "tex": '%',
+    \   "matlab": '%',
     \ }
 function! ToggleComment()
     if has_key(s:comment_map, &filetype)
