@@ -1,16 +1,22 @@
-" Load plugins
-execute pathogen#infect()
+set nocompatible
+filetype off
+
+" Vundle
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+Plugin 'VundleVim/Vundle.vim'
+
+" Plugins
+Plugin 'christoomey/vim-tmux-navigator'
+
+call vundle#end()
 
 filetype indent plugin on
 syntax enable
 
-set hlsearch
-set number ruler
+set hlsearch incsearch
+set number ruler relativenumber
 set wrap linebreak
-
-" Remap j and k to move to the line directly below/above even with linewrap on
-nnoremap j gj
-nnoremap k gk
 
 " Tab behavior settings (tab = 4 spaces)
 set expandtab shiftwidth=4 smarttab
@@ -18,27 +24,108 @@ set expandtab shiftwidth=4 smarttab
 " Cause indenting issues for special filetypes:
 " smartindent autoindent
 
-" Press Space to turn off highlighting and clear any message already displayed
-nnoremap <silent> <Space> :nohlsearch<Bar>:echo<CR>
-set incsearch
+" BINDINGS ============================================================
+
+let mapleader = "\<Space>"
+
+" Remap j and k to move to the line directly below/above even with linewrap on
+nnoremap j gj
+nnoremap k gk
+
+" Press <leader>space to turn off highlighting and clear any message already displayed
+nnoremap <silent> <leader><Space> :nohlsearch<Bar>:echo<CR>
 
 " Bind jk to escape while in insert mode
 inoremap jk <Esc>
+inoremap jj _
 
-" Bind <C-k> to comment visually selected blocks with '#' and <C-u> to uncomment
-" Replaced by the more advanced ToggleComment function below
-" vnoremap <silent> <C-k> :s/^/#/<cr>:noh<cr>
-" vnoremap <silent> <C-u> :s/^#//<cr>:noh<cr>
+" Saving and exiting files
+nnoremap <leader>w :w<CR>
+nnoremap <leader>x :x<CR>
+nnoremap <leader>q :q<CR>
+nnoremap <leader>Q :q!<CR>
+
+" Q to apply macro stored in q
+nnoremap Q @q
+vnoremap Q :norm @q<cr>
+
+" Consistent Y
+nnoremap Y y$
+
+" Replace word under cursor and continue replacing with '.' or skip with 'n'
+nnoremap <Leader>c /\<<C-R>=expand('<cword>')<CR>\>\C<CR>``cgn
+nnoremap <Leader>C ?\<<C-R>=expand('<cword>')<CR>\>\C<CR>``cgN
+
+" Same for delete
+nnoremap d* /\<<C-r>=expand('<cword>')<CR>\>\C<CR>``dgn
+nnoremap d# ?\<<C-r>=expand('<cword>')<CR>\>\C<CR>``dgN
+
+" Tab and S-Tab to indent and unindent
+nmap >> <Nop>
+nmap << <Nop>
+vmap >> <Nop>
+vmap << <Nop>
+nnoremap <Tab>   >>
+nnoremap <S-Tab> <<
+vnoremap <Tab>   >><Esc>gv
+vnoremap <S-Tab> <<<Esc>gv
+
+" BRACES ------------------
+" Credit: https://vim.fandom.com/wiki/Making_Parenthesis_And_Brackets_Handling_Easier
+" Create matching "braces" automatically
+inoremap ( ()<Esc>:let leavechar=")"<CR>i
+inoremap { {}<Esc>:let leavechar="}"<CR>i
+inoremap [ []<Esc>:let leavechar="]"<CR>i
+inoremap < <><Esc>:let leavechar=">"<CR>i
+inoremap " ""<Esc>:let leavechar="\""<CR>i
+inoremap ' ''<Esc>:let leavechar="'"<CR>i
+inoremap ` ``<Esc>:let leavechar="`"<CR>i
+
+" Use C-y to escape the closing brace (could maybe just replace with <left>?)
+inoremap <C-y> <Esc>:exec "normal f" . leavechar<CR>a
+
+" Not done if close brace is typed right after, eg: foo = bar() + 3
+inoremap () ()
+inoremap {} {}
+inoremap [] []
+inoremap <> <>
+inoremap "" ""
+inoremap '' ''
+inoremap `` ``
+
+" Pressing the open brace character in visual mode encloses the highlighted text in the brace
+vnoremap ( <Esc>`>a)<Esc>`<i(<Esc>
+vnoremap [ <Esc>`>a]<Esc>`<i[<Esc>
+vnoremap { <Esc>`>a}<Esc>`<i{<Esc>
+vnoremap < <Esc>`>a><Esc>`<i<<Esc>
+vnoremap " <Esc>`>a"<Esc>`<i"<Esc>
+vnoremap ' <Esc>`>a'<Esc>`<i'<Esc>
+vnoremap ` <Esc>`>a`<Esc>`<i`<Esc>
+
+" For putting a closing brace lower, like with C, Java, etc (Add a <TAB>?)
+inoremap {<CR> {<CR>}<Esc>ko
+
+" <S-direction> for tab movement
+" nnoremap <S-l> gt
+" nnoremap <S-h> gT
+
+" <C-direction> for pane movement (taken care of by vim-tmux-nav)
+" nnoremap <C-J> <C-W><C-J>
+" nnoremap <C-K> <C-W><C-K>
+" nnoremap <C-L> <C-W><C-L>
+" nnoremap <C-H> <C-W><C-H>
+
+" END BINDINGS ==================================================================
+
+set splitbelow
+set splitright
 
 " Highlight the end of the max line length
 " set cc=81
 colorscheme peachpuff
-" highlight constant ctermfg=blue
-" highlight comment ctermfg=green
-" highlight LineNr ctermfg=brown
-" highlight ColorColumn ctermfg=brown
 
-" ctags support  $ ctags -R *
+" ctags support
+" $ctags -R *
 set autochdir
 set tags=tags;
 
@@ -51,7 +138,7 @@ autocmd FileType python setlocal indentkeys-=:
 " Underline the current line for easier cursor visibility
 set cursorline
 
-" More involved scripts borrowed from Stack Overflow below =============
+" More involved scripts borrowed from Stack Overflow below ==========================
 
 " bind C-c and C-v to copy to and paste from the system buffer
 " in visual and insert mode respectively
@@ -105,5 +192,10 @@ function! ToggleComment()
         echo "No comment leader found for filetype"
     end
 endfunction
-nnoremap <C-k> :call ToggleComment()<cr>
-vnoremap <C-k> :call ToggleComment()<cr>
+nnoremap <C-f> :call ToggleComment()<cr>
+vnoremap <C-f> :call ToggleComment()<cr>
+
+" more custom bindings =================================================
+
+" copy and paste a line while leaving the first commented out
+nnoremap <leader>y yypk:call ToggleComment()<cr>j
