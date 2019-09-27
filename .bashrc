@@ -24,16 +24,14 @@ HISTTIMEFORMAT='%F %T '
 shopt -s cmdhist
 PROMPT_COMMAND='history -a'
 
-# run a command in a new vertical split pane while leaving the cursor be
-# from https://sanctum.geek.nz/arabesque/watching-with-tmux/
-function tmw {
-    tmux split-window -dh "$*"
-}
-
 function vimrc {
     vim ~/.vimrc
 }
 
 function bashrc {
     vim ~/.bashrc
+}
+
+function tmuxconf {
+    vim ~/.tmux.conf
 }

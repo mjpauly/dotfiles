@@ -8,6 +8,8 @@ Plugin 'VundleVim/Vundle.vim'
 
 " Plugins
 Plugin 'christoomey/vim-tmux-navigator'
+Plugin 'ludovicchabant/vim-gutentags'
+Plugin 'ycm-core/YouCompleteMe'
 
 call vundle#end()
 
@@ -60,44 +62,41 @@ nnoremap <Leader>C ?\<<C-R>=expand('<cword>')<CR>\>\C<CR>``cgN
 nnoremap d* /\<<C-r>=expand('<cword>')<CR>\>\C<CR>``dgn
 nnoremap d# ?\<<C-r>=expand('<cword>')<CR>\>\C<CR>``dgN
 
-" Tab and S-Tab to indent and unindent
-nmap >> <Nop>
-nmap << <Nop>
-vmap >> <Nop>
-vmap << <Nop>
-nnoremap <Tab>   >>
-nnoremap <S-Tab> <<
-vnoremap <Tab>   >><Esc>gv
-vnoremap <S-Tab> <<<Esc>gv
-
 " BRACES ------------------
-" Credit: https://vim.fandom.com/wiki/Making_Parenthesis_And_Brackets_Handling_Easier
 " Create matching "braces" automatically
-inoremap ( ()<Esc>:let leavechar=")"<CR>i
-inoremap { {}<Esc>:let leavechar="}"<CR>i
-inoremap [ []<Esc>:let leavechar="]"<CR>i
-inoremap < <><Esc>:let leavechar=">"<CR>i
-inoremap " ""<Esc>:let leavechar="\""<CR>i
-inoremap ' ''<Esc>:let leavechar="'"<CR>i
-inoremap ` ``<Esc>:let leavechar="`"<CR>i
+inoremap ( ()<left>
+inoremap { {}<left>
+inoremap [ []<left>
+inoremap " ""<left>
+inoremap ' ''<left>
+inoremap ` ``<left>
 
-" Use C-y to escape the closing brace (could maybe just replace with <left>?)
-inoremap <C-y> <Esc>:exec "normal f" . leavechar<CR>a
+" Use C-y to escape the closing brace
+inoremap <C-y> <right>
 
 " Not done if close brace is typed right after, eg: foo = bar() + 3
 inoremap () ()
 inoremap {} {}
 inoremap [] []
-inoremap <> <>
 inoremap "" ""
 inoremap '' ''
 inoremap `` ``
+
+" For python, don't do it if typing ''' or """
+inoremap ''' '''
+inoremap """ """
+
+" Don't do it when using it as an apostrophe (eg "don't")
+inoremap 't 't
+inoremap 's 's
+inoremap 'r 'r
+inoremap 'v 'v
+inoremap 'l 'l
 
 " Pressing the open brace character in visual mode encloses the highlighted text in the brace
 vnoremap ( <Esc>`>a)<Esc>`<i(<Esc>
 vnoremap [ <Esc>`>a]<Esc>`<i[<Esc>
 vnoremap { <Esc>`>a}<Esc>`<i{<Esc>
-vnoremap < <Esc>`>a><Esc>`<i<<Esc>
 vnoremap " <Esc>`>a"<Esc>`<i"<Esc>
 vnoremap ' <Esc>`>a'<Esc>`<i'<Esc>
 vnoremap ` <Esc>`>a`<Esc>`<i`<Esc>
@@ -109,11 +108,9 @@ inoremap {<CR> {<CR>}<Esc>ko
 " nnoremap <S-l> gt
 " nnoremap <S-h> gT
 
-" <C-direction> for pane movement (taken care of by vim-tmux-nav)
-" nnoremap <C-J> <C-W><C-J>
-" nnoremap <C-K> <C-W><C-K>
-" nnoremap <C-L> <C-W><C-L>
-" nnoremap <C-H> <C-W><C-H>
+" Open definition in new tab and open in a vertical split (C-W C-] for horizontal)
+nnoremap <C-\> :tab split<CR>:exec("tag ".expand("<cword>"))<CR>
+nnoremap <leader>] :vsp <CR>:exec("tag ".expand("<cword>"))<CR>
 
 " END BINDINGS ==================================================================
 
@@ -124,10 +121,10 @@ set splitright
 " set cc=81
 colorscheme peachpuff
 
-" ctags support
-" $ctags -R *
-set autochdir
-set tags=tags;
+" ctags support $ctags -R *
+" set autochdir
+" set tags=tags;
+set tags=./tags;
 
 set mouse=a
 
@@ -142,8 +139,9 @@ set cursorline
 
 " bind C-c and C-v to copy to and paste from the system buffer
 " in visual and insert mode respectively
-vnoremap <silent> <C-c> :<CR>:let @a=@" \| execute "normal! vgvy" \| let res=system("pbcopy", @") \| let @"=@a<CR>
-imap <C-v> <Esc>:set paste<CR>:r !pbpaste<CR>:set nopaste<CR>
+vnoremap <silent> <leader>c :<CR>:let @a=@" \| execute "normal! vgvy" \| let res=system("pbcopy", @") \| let @"=@a<CR>
+inoremap <leader>v <Esc>:set paste<CR>:r !pbpaste<CR>:set nopaste<CR>
+nnoremap <leader>v :set paste<CR>:r !pbpaste<CR>:set nopaste<CR>
 
 " Comment toggling! Credit to user427390 at https://stackoverflow.com/a/24046914.
 let s:comment_map = { 
@@ -192,10 +190,10 @@ function! ToggleComment()
         echo "No comment leader found for filetype"
     end
 endfunction
-nnoremap <C-f> :call ToggleComment()<cr>
-vnoremap <C-f> :call ToggleComment()<cr>
+nnoremap <leader>f :call ToggleComment()<cr>
+vnoremap <leader>f :call ToggleComment()<cr>
 
 " more custom bindings =================================================
 
 " copy and paste a line while leaving the first commented out
-nnoremap <leader>y yypk:call ToggleComment()<cr>j
+nnoremap <C-f> yypk:call ToggleComment()<cr>j
