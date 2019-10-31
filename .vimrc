@@ -9,7 +9,7 @@ Plugin 'VundleVim/Vundle.vim'
 " Plugins
 Plugin 'christoomey/vim-tmux-navigator'
 Plugin 'ludovicchabant/vim-gutentags'
-Plugin 'ycm-core/YouCompleteMe'
+" Plugin 'ycm-core/YouCompleteMe'
 
 call vundle#end()
 
@@ -17,13 +17,13 @@ filetype indent plugin on
 syntax enable
 
 set hlsearch incsearch
-set number ruler relativenumber
+set number ruler "relativenumber
 set wrap linebreak
 
-" Tab behavior settings (tab = 4 spaces)
-set expandtab shiftwidth=4 smarttab
+" Tab behavior settings
+set expandtab shiftwidth=2 smarttab
 " set tabstop=4 softtabstop=4 " testing with this off - <Tabs> will count as 8 spaces
-" Cause indenting issues for special filetypes:
+" Cause indenting issues for certain filetypes:
 " smartindent autoindent
 
 " BINDINGS ============================================================
@@ -62,37 +62,6 @@ nnoremap <Leader>C ?\<<C-R>=expand('<cword>')<CR>\>\C<CR>``cgN
 nnoremap d* /\<<C-r>=expand('<cword>')<CR>\>\C<CR>``dgn
 nnoremap d# ?\<<C-r>=expand('<cword>')<CR>\>\C<CR>``dgN
 
-" BRACES ------------------
-" Create matching "braces" automatically
-inoremap ( ()<left>
-inoremap { {}<left>
-inoremap [ []<left>
-inoremap " ""<left>
-inoremap ' ''<left>
-inoremap ` ``<left>
-
-" Use C-y to escape the closing brace
-inoremap <C-y> <right>
-
-" Not done if close brace is typed right after, eg: foo = bar() + 3
-inoremap () ()
-inoremap {} {}
-inoremap [] []
-inoremap "" ""
-inoremap '' ''
-inoremap `` ``
-
-" For python, don't do it if typing ''' or """
-inoremap ''' '''
-inoremap """ """
-
-" Don't do it when using it as an apostrophe (eg "don't")
-inoremap 't 't
-inoremap 's 's
-inoremap 'r 'r
-inoremap 'v 'v
-inoremap 'l 'l
-
 " Pressing the open brace character in visual mode encloses the highlighted text in the brace
 vnoremap ( <Esc>`>a)<Esc>`<i(<Esc>
 vnoremap [ <Esc>`>a]<Esc>`<i[<Esc>
@@ -104,9 +73,9 @@ vnoremap ` <Esc>`>a`<Esc>`<i`<Esc>
 " For putting a closing brace lower, like with C, Java, etc (Add a <TAB>?)
 inoremap {<CR> {<CR>}<Esc>ko
 
-" <S-direction> for tab movement
-" nnoremap <S-l> gt
-" nnoremap <S-h> gT
+" <leader-direction> for tab movement
+nnoremap <leader>l gt
+nnoremap <leader>h gT
 
 " Open definition in new tab and open in a vertical split (C-W C-] for horizontal)
 nnoremap <C-\> :tab split<CR>:exec("tag ".expand("<cword>"))<CR>
@@ -118,7 +87,7 @@ set splitbelow
 set splitright
 
 " Highlight the end of the max line length
-" set cc=81
+" set cc=101
 colorscheme peachpuff
 
 " ctags support $ctags -R *
@@ -137,10 +106,10 @@ set cursorline
 
 " More involved scripts borrowed from Stack Overflow below ==========================
 
-" bind C-c and C-v to copy to and paste from the system buffer
+" bind leader-c and leader-v to copy to and paste from the system buffer
 " in visual and insert mode respectively
 vnoremap <silent> <leader>c :<CR>:let @a=@" \| execute "normal! vgvy" \| let res=system("pbcopy", @") \| let @"=@a<CR>
-inoremap <leader>v <Esc>:set paste<CR>:r !pbpaste<CR>:set nopaste<CR>
+" inoremap <leader>v <Esc>:set paste<CR>:r !pbpaste<CR>:set nopaste<CR>
 nnoremap <leader>v :set paste<CR>:r !pbpaste<CR>:set nopaste<CR>
 
 " Comment toggling! Credit to user427390 at https://stackoverflow.com/a/24046914.
