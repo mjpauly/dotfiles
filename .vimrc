@@ -1,7 +1,8 @@
 set nocompatible
 filetype off
 
-" Vundle
+" Vundle  (for help do :h vundle)
+" Install with :PluginInstall and update with :PluginUpdate
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 Plugin 'VundleVim/Vundle.vim'
@@ -9,6 +10,14 @@ Plugin 'VundleVim/Vundle.vim'
 " Plugins
 Plugin 'christoomey/vim-tmux-navigator'
 Plugin 'ludovicchabant/vim-gutentags'
+Plugin 'tpope/vim-surround'
+Plugin 'tpope/vim-repeat'
+Plugin 'vim-scripts/argtextobj.vim'
+Plugin 'tpope/vim-speeddating'
+Plugin 'glts/vim-magnum'  " dependency of radical
+Plugin 'glts/vim-radical'
+Plugin 'tpope/vim-fugitive'
+
 " Plugin 'ycm-core/YouCompleteMe'
 
 call vundle#end()
@@ -21,7 +30,7 @@ set number ruler "relativenumber
 set wrap linebreak
 
 " Tab behavior settings
-set expandtab shiftwidth=2 smarttab
+set expandtab shiftwidth=4 smarttab
 " set tabstop=4 softtabstop=4 " testing with this off - <Tabs> will count as 8 spaces
 " Cause indenting issues for certain filetypes:
 " smartindent autoindent
@@ -104,6 +113,9 @@ autocmd FileType python setlocal indentkeys-=:
 " Underline the current line for easier cursor visibility
 set cursorline
 
+highlight ExtraWhitespace ctermbg=darkgreen guibg=darkgreen
+match ExtraWhitespace /\s\+$/
+
 " More involved scripts borrowed from Stack Overflow below ==========================
 
 " bind leader-c and leader-v to copy to and paste from the system buffer
@@ -113,7 +125,7 @@ vnoremap <silent> <leader>c :<CR>:let @a=@" \| execute "normal! vgvy" \| let res
 nnoremap <leader>v :set paste<CR>:r !pbpaste<CR>:set nopaste<CR>
 
 " Comment toggling! Credit to user427390 at https://stackoverflow.com/a/24046914.
-let s:comment_map = { 
+let s:comment_map = {
     \   "c": '\/\/',
     \   "cpp": '\/\/',
     \   "go": '\/\/',
@@ -143,10 +155,10 @@ let s:comment_map = {
 function! ToggleComment()
     if has_key(s:comment_map, &filetype)
         let comment_leader = s:comment_map[&filetype]
-        if getline('.') =~ "^\\s*" . comment_leader . " " 
+        if getline('.') =~ "^\\s*" . comment_leader . " "
             " Uncomment the line
             execute "silent s/^\\(\\s*\\)" . comment_leader . " /\\1/"
-        else 
+        else
             if getline('.') =~ "^\\s*" . comment_leader
                 " Uncomment the line
                 execute "silent s/^\\(\\s*\\)" . comment_leader . "/\\1/"

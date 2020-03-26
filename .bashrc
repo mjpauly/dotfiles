@@ -7,8 +7,7 @@ alias config='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
 # install solarized for terminal:
 # https://github.com/tomislav/osx-terminal.app-colors-solarized
 
-# install pathogen for vim:
-# https://github.com/tpope/vim-pathogen
+# install vundle
 
 # add to .bash_profile:
 # [[ -s ~/.bashrc ]] && source ~/.bashrc
@@ -35,3 +34,23 @@ function bashrc {
 function tmuxconf {
     vim ~/.tmux.conf
 }
+
+function myth {
+    # echo "Current credentials:"
+    # klist
+    ssh myth.stanford.edu
+}
+
+function rice {
+    ssh rice.stanford.edu
+}
+
+function kinit2 {
+    kinit mjpauly@stanford.edu
+}
+
+function ppath {
+    echo $PATH | tr ':' '\n'
+}
+
+alias md="perl ~/Markdown.pl --html4tags"
