@@ -22,7 +22,8 @@ alias config='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
 
 [[ -s ~/.bashrc_default ]] && source ~/.bashrc_default
 
-export PS1="\[\033[38;5;6m\]\W\[$(tput sgr0)\]\[\033[38;5;15m\] \[$(tput sgr0)\]\[\033[38;5;2m\]\u\[$(tput sgr0)\]\\$ \[$(tput sgr0)\]"
+# export PS1="\[\033[38;5;6m\]\W\[$(tput sgr0)\]\[\033[38;5;15m\] \[$(tput sgr0)\]\[\033[38;5;2m\]\u\[$(tput sgr0)\]\\$ \[$(tput sgr0)\]"
+export PS1="\u@\h \[$(tput sgr0)\]\[\033[38;5;106m\]\W\[$(tput sgr0)\]\\$ \[$(tput sgr0)\]"
 
 shopt -s histappend
 HISTFILESIZE=1000000
