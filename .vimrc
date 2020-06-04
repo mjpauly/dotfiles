@@ -27,13 +27,16 @@ syntax enable
 
 set hlsearch incsearch
 set number ruler "relativenumber
+" set ruler "relativenumber
 set wrap linebreak
 
 " Tab behavior settings
-set expandtab shiftwidth=4 smarttab
+set expandtab shiftwidth=2 smarttab
 " set tabstop=4 softtabstop=4 " testing with this off - <Tabs> will count as 8 spaces
 " Cause indenting issues for certain filetypes:
 " smartindent autoindent
+
+set laststatus=2
 
 " BINDINGS ============================================================
 
@@ -96,8 +99,18 @@ set splitbelow
 set splitright
 
 " Highlight the end of the max line length
-" set cc=101
+set cc=80
 colorscheme peachpuff
+
+hi ColorColumn ctermbg=black
+hi Folded ctermbg=black
+hi FoldColumn ctermbg=black
+
+" Vim diff highlighting
+hi DiffAdd ctermfg=black ctermbg=green
+hi DiffChange ctermfg=none ctermbg=none
+hi DiffDelete ctermfg=black ctermbg=red
+hi DiffText ctermfg=black ctermbg=yellow
 
 " ctags support $ctags -R *
 " set autochdir
@@ -113,7 +126,7 @@ autocmd FileType python setlocal indentkeys-=:
 " Underline the current line for easier cursor visibility
 set cursorline
 
-highlight ExtraWhitespace ctermbg=darkgreen guibg=darkgreen
+highlight ExtraWhitespace ctermbg=green guibg=green 
 match ExtraWhitespace /\s\+$/
 
 " More involved scripts borrowed from Stack Overflow below ==========================
@@ -151,6 +164,7 @@ let s:comment_map = {
     \   "vim": '"',
     \   "tex": '%',
     \   "matlab": '%',
+    \   "gdb": '#',
     \ }
 function! ToggleComment()
     if has_key(s:comment_map, &filetype)
