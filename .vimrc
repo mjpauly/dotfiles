@@ -8,6 +8,7 @@ call vundle#begin()
 Plugin 'VundleVim/Vundle.vim'
 
 " Plugins
+Plugin 'tpope/vim-sensible'
 Plugin 'christoomey/vim-tmux-navigator'
 Plugin 'ludovicchabant/vim-gutentags'
 Plugin 'tpope/vim-surround'
@@ -17,6 +18,7 @@ Plugin 'tpope/vim-speeddating'
 Plugin 'glts/vim-magnum'  " dependency of radical
 Plugin 'glts/vim-radical'
 Plugin 'tpope/vim-fugitive'
+" Plugin 'szymonmaszke/vimpyter'
 
 " Plugin 'ycm-core/YouCompleteMe'
 
@@ -26,7 +28,7 @@ filetype indent plugin on
 syntax enable
 
 set hlsearch incsearch
-set number ruler "relativenumber
+set number ruler
 set wrap linebreak
 
 " Tab behavior settings
@@ -35,6 +37,9 @@ set expandtab shiftwidth=4 smarttab
 " Cause indenting issues for certain filetypes:
 " smartindent autoindent
 
+set laststatus=2
+set showcmd
+
 " BINDINGS ============================================================
 
 let mapleader = "\<Space>"
@@ -42,6 +47,8 @@ let mapleader = "\<Space>"
 " Remap j and k to move to the line directly below/above even with linewrap on
 nnoremap j gj
 nnoremap k gk
+vnoremap j gj
+vnoremap k gk
 
 " Press <leader>space to turn off highlighting and clear any message already displayed
 nnoremap <silent> <leader><Space> :nohlsearch<Bar>:echo<CR>
@@ -49,6 +56,7 @@ nnoremap <silent> <leader><Space> :nohlsearch<Bar>:echo<CR>
 " Bind jk to escape while in insert mode
 inoremap jk <Esc>
 inoremap jj _
+inoremap JJ _
 
 " Saving and exiting files
 nnoremap <leader>w :w<CR>
@@ -96,8 +104,23 @@ set splitbelow
 set splitright
 
 " Highlight the end of the max line length
-" set cc=101
-colorscheme peachpuff
+set cc=100
+colorscheme peachpuff  " remember to put highlight commands after this
+
+hi ColorColumn ctermbg=black
+hi Folded ctermbg=black
+hi FoldColumn ctermbg=black
+
+" Vim diff highlighting
+hi DiffAdd ctermfg=black ctermbg=green
+hi DiffChange ctermfg=none ctermbg=none
+hi DiffDelete ctermfg=black ctermbg=red
+hi DiffText ctermfg=black ctermbg=yellow
+
+" Vimpyter
+let g:vimpyter_view_directory = '$HOME/.vimpyter_views'
+autocmd Filetype ipynb nmap <silent><Leader>b :VimpyterInsertPythonBlock<CR>
+autocmd Filetype ipynb nmap <silent><Leader>j :VimpyterStartJupyter<CR>
 
 " ctags support $ctags -R *
 " set autochdir
@@ -113,8 +136,8 @@ autocmd FileType python setlocal indentkeys-=:
 " Underline the current line for easier cursor visibility
 set cursorline
 
-highlight ExtraWhitespace ctermbg=darkgreen guibg=darkgreen
-match ExtraWhitespace /\s\+$/
+" highlight ExtraWhitespace ctermbg=darkgreen guibg=darkgreen
+" match ExtraWhitespace /\s\+$/
 
 " More involved scripts borrowed from Stack Overflow below ==========================
 
@@ -173,6 +196,26 @@ function! ToggleComment()
 endfunction
 nnoremap <leader>f :call ToggleComment()<cr>
 vnoremap <leader>f :call ToggleComment()<cr>
+
+" from https://vi.stackexchange.com/a/17963
+" Write directory to temp file
+let s:temporary_directory = "/Users/matthewpauly/tmp/vimtmpfiles/"
+let s:chdirectory_directory = s:temporary_directory . "chdir"
+let s:chdirectory_file = s:chdirectory_directory . "/chdir"
+if !isdirectory(s:chdirectory_directory)
+  call mkdir(s:chdirectory_directory, 'p')
+endif
+function! s:isdir(dir)
+  return !empty(a:dir) && (isdirectory(a:dir) ||
+        \ (!empty($SYSTEMDRIVE) && isdirectory('/'.tolower($SYSTEMDRIVE[0]).a:dir)))
+endfunction
+augroup write_chdir
+  autocmd!
+  autocmd VimLeavePre *
+        \ if <SID>isdir(expand('%'))
+        \ | call writefile([expand('%:p')], s:chdirectory_file)
+        \ | endif
+augroup END
 
 " more custom bindings =================================================
 
