@@ -32,7 +32,7 @@ set number ruler
 set wrap linebreak
 
 " Tab behavior settings
-set expandtab shiftwidth=4 smarttab
+set expandtab shiftwidth=2 smarttab
 " set tabstop=4 softtabstop=4 " testing with this off - <Tabs> will count as 8 spaces
 " Cause indenting issues for certain filetypes:
 " smartindent autoindent
@@ -122,6 +122,16 @@ let g:vimpyter_view_directory = '$HOME/.vimpyter_views'
 autocmd Filetype ipynb nmap <silent><Leader>b :VimpyterInsertPythonBlock<CR>
 autocmd Filetype ipynb nmap <silent><Leader>j :VimpyterStartJupyter<CR>
 
+hi ColorColumn ctermbg=black
+hi Folded ctermbg=black
+hi FoldColumn ctermbg=black
+
+" Vim diff highlighting
+hi DiffAdd ctermfg=black ctermbg=green
+hi DiffChange ctermfg=none ctermbg=none
+hi DiffDelete ctermfg=black ctermbg=red
+hi DiffText ctermfg=black ctermbg=yellow
+
 " ctags support $ctags -R *
 " set autochdir
 " set tags=tags;
@@ -174,6 +184,7 @@ let s:comment_map = {
     \   "vim": '"',
     \   "tex": '%',
     \   "matlab": '%',
+    \   "gdb": '#',
     \ }
 function! ToggleComment()
     if has_key(s:comment_map, &filetype)

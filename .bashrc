@@ -4,15 +4,26 @@ alias config='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
 
 # use keyboard system prefs to rebind caps-lock to ctrl
 
-# install solarized for terminal:
+# (optional) install solarized for terminal:
 # https://github.com/tomislav/osx-terminal.app-colors-solarized
 
+# migrate over dotfiles
+# https://www.atlassian.com/git/tutorials/dotfiles
+
 # install vundle
+# git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+
+# install tpm:
+# git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+# Press prefix + I (capital i, as in Install) to fetch the plugin.
 
 # add to .bash_profile:
 # [[ -s ~/.bashrc ]] && source ~/.bashrc
 
-export PS1="\[\033[38;5;6m\]\W\[$(tput sgr0)\]\[\033[38;5;15m\] \[$(tput sgr0)\]\[\033[38;5;2m\]\u\[$(tput sgr0)\]\\$ \[$(tput sgr0)\]"
+[[ -s ~/.bashrc_default ]] && source ~/.bashrc_default
+
+# export PS1="\[\033[38;5;6m\]\W\[$(tput sgr0)\]\[\033[38;5;15m\] \[$(tput sgr0)\]\[\033[38;5;2m\]\u\[$(tput sgr0)\]\\$ \[$(tput sgr0)\]"
+export PS1="\u@\h \[$(tput sgr0)\]\[\033[38;5;106m\]\W\[$(tput sgr0)\]\\$ \[$(tput sgr0)\]"
 
 # export PS1="\[\033[38;5;196m\]   __
    # \ \_____
