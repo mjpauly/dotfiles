@@ -1,0 +1,7 @@
+[user]
+	name = Matthew Pauly
+	email = mjpauly@mac.com
+[core]
+	editor = vim
+[diff]
+        tool = vimdiff
