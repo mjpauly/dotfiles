@@ -23,7 +23,7 @@ alias config='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
 [[ -s ~/.bashrc_default ]] && source ~/.bashrc_default
 
 # export PS1="\[\033[38;5;6m\]\W\[$(tput sgr0)\]\[\033[38;5;15m\] \[$(tput sgr0)\]\[\033[38;5;2m\]\u\[$(tput sgr0)\]\\$ \[$(tput sgr0)\]"
-export PS1="\u@\h \[$(tput sgr0)\]\[\033[38;5;106m\]\W\[$(tput sgr0)\]\\$ \[$(tput sgr0)\]"
+# export PS1="\u@\h \[$(tput sgr0)\]\[\033[38;5;106m\]\W\[$(tput sgr0)\]\\$ \[$(tput sgr0)\]"
 
 # export PS1="\[\033[38;5;196m\]   __
    # \ \_____
@@ -60,7 +60,7 @@ alias md="perl ~/Markdown.pl --html4tags"
 alias grc="/Applications/GNURadio.app/Contents/MacOS/usr/bin/run-grc"
 
 # from https://vi.stackexchange.com/a/17963
-vimcd() {
+vd() {
   local tempfile="$HOME/tmp/vimtmpfiles/chdir/chdir"
   vim .
   test -f "$tempfile" &&
