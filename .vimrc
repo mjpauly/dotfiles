@@ -177,6 +177,8 @@ let s:comment_map = {
     \   "gdb": '#',
     \   "verilog": '\/\/',
     \   "tcl": '#',
+    \   "zsh": '#',
+    \   "tmux": '#',
     \ }
 function! ToggleComment()
     if has_key(s:comment_map, &filetype)
