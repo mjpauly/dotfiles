@@ -55,9 +55,11 @@ alias mfl="ssh mayfieldlinux.local"
 alias py="ipython"
 alias nb="jupyter notebook"
 
-alias md="perl ~/Markdown.pl --html4tags"
-# alias md="echo 'use this: https://github.com/readthedocs/commonmark.py'"
+#alias md="perl ~/Markdown.pl --html4tags"
+alias md="echo 'use commonmark (pip install commonmark), cmark [in] -o [out]'"
 alias grc="/Applications/GNURadio.app/Contents/MacOS/usr/bin/run-grc"
+
+alias sva="source /home/mjpauly/repos/wakey_wakey/venv/bin/activate"
 
 # from https://vi.stackexchange.com/a/17963
 vd() {

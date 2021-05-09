@@ -32,7 +32,7 @@ set number ruler
 set wrap linebreak
 
 " Tab behavior settings
-set expandtab shiftwidth=2 smarttab
+set expandtab shiftwidth=4 smarttab
 " set tabstop=4 softtabstop=4 " testing with this off - <Tabs> will count as 8 spaces
 " Cause indenting issues for certain filetypes:
 " smartindent autoindent
@@ -104,7 +104,7 @@ set splitbelow
 set splitright
 
 " Highlight the end of the max line length
-set cc=100
+set cc=81
 colorscheme peachpuff  " remember to put highlight commands after this
 
 hi ColorColumn ctermbg=black
@@ -118,19 +118,9 @@ hi DiffDelete ctermfg=black ctermbg=red
 hi DiffText ctermfg=black ctermbg=yellow
 
 " Vimpyter
-let g:vimpyter_view_directory = '$HOME/.vimpyter_views'
-autocmd Filetype ipynb nmap <silent><Leader>b :VimpyterInsertPythonBlock<CR>
-autocmd Filetype ipynb nmap <silent><Leader>j :VimpyterStartJupyter<CR>
-
-hi ColorColumn ctermbg=black
-hi Folded ctermbg=black
-hi FoldColumn ctermbg=black
-
-" Vim diff highlighting
-hi DiffAdd ctermfg=black ctermbg=green
-hi DiffChange ctermfg=none ctermbg=none
-hi DiffDelete ctermfg=black ctermbg=red
-hi DiffText ctermfg=black ctermbg=yellow
+" let g:vimpyter_view_directory = '$HOME/.vimpyter_views'
+" autocmd Filetype ipynb nmap <silent><Leader>b :VimpyterInsertPythonBlock<CR>
+" autocmd Filetype ipynb nmap <silent><Leader>j :VimpyterStartJupyter<CR>
 
 " ctags support $ctags -R *
 " set autochdir
@@ -185,6 +175,10 @@ let s:comment_map = {
     \   "tex": '%',
     \   "matlab": '%',
     \   "gdb": '#',
+    \   "verilog": '\/\/',
+    \   "tcl": '#',
+    \   "zsh": '#',
+    \   "tmux": '#',
     \ }
 function! ToggleComment()
     if has_key(s:comment_map, &filetype)
@@ -210,7 +204,7 @@ vnoremap <leader>f :call ToggleComment()<cr>
 
 " from https://vi.stackexchange.com/a/17963
 " Write directory to temp file
-let s:temporary_directory = "/Users/matthewpauly/tmp/vimtmpfiles/"
+let s:temporary_directory = "/home/mjpauly/tmp/vimtmpfiles/"
 let s:chdirectory_directory = s:temporary_directory . "chdir"
 let s:chdirectory_file = s:chdirectory_directory . "/chdir"
 if !isdirectory(s:chdirectory_directory)
