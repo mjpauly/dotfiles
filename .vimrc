@@ -204,7 +204,7 @@ vnoremap <leader>f :call ToggleComment()<cr>
 
 " from https://vi.stackexchange.com/a/17963
 " Write directory to temp file
-let s:temporary_directory = "/home/mjpauly/tmp/vimtmpfiles/"
+let s:temporary_directory = $HOME . "/tmp/vimtmpfiles/"
 let s:chdirectory_directory = s:temporary_directory . "chdir"
 let s:chdirectory_file = s:chdirectory_directory . "/chdir"
 if !isdirectory(s:chdirectory_directory)
