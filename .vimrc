@@ -83,7 +83,7 @@ nnoremap d# ?\<<C-r>=expand('<cword>')<CR>\>\C<CR>``dgN
 vnoremap ( <Esc>`>a)<Esc>`<i(<Esc>
 vnoremap [ <Esc>`>a]<Esc>`<i[<Esc>
 vnoremap { <Esc>`>a}<Esc>`<i{<Esc>
-vnoremap " <Esc>`>a"<Esc>`<i"<Esc>
+" vnoremap " <Esc>`>a"<Esc>`<i"<Esc>
 vnoremap ' <Esc>`>a'<Esc>`<i'<Esc>
 vnoremap ` <Esc>`>a`<Esc>`<i`<Esc>
 
