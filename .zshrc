@@ -1,5 +1,7 @@
 # ==================== Personal additions ====================
 
+source ~/.zpath
+
 alias config='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
 
 # ------- instructions for migrating setup ------- #
@@ -16,9 +18,14 @@ alias config='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
 # git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 # Press prefix + I (capital i, as in Install) to fetch the plugin.
 
+# install miniforge
+
+export EDITOR=VIM
+
 alias vimrc="vim ~/.vimrc"
 alias bashrc="vim ~/.bashrc"
 alias zshrc="vim ~/.zshrc"
+alias zpath="vim ~/.zpath"
 alias tmuxconf="vim ~/.tmux.conf"
 
 alias myth="ssh -K myth.stanford.edu"
@@ -26,9 +33,7 @@ alias mythy="ssh -K -Y myth.stanford.edu"
 alias rice="ssh rice.stanford.edu"
 alias kinit2="kinit mjpauly@stanford.edu"
 
-alias ppath='echo $PATH | tr ":" "\n"'
-
-alias mfl="ssh mayfieldlinux.local"
+alias ppath='echo $PATH | tr ":" "\n"'  # pretty-print the path
 
 alias py="ipython"
 alias nb="jupyter notebook"
@@ -56,7 +61,7 @@ vd() {
 setopt histignorealldups sharehistory
 
 # Use emacs keybindings even if our EDITOR is set to vi
-bindkey -e
+# bindkey -e
 
 # Keep 1000000 lines of history within the shell and save it to ~/.zsh_history:
 HISTSIZE=1000000
