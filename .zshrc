@@ -43,8 +43,6 @@ alias nb="jupyter notebook"
 # alias md="perl ~/Markdown.pl --html4tags"
 alias md="echo 'use commonmark (pip install commonmark), cmark [in] -o [out]'"
 
-alias sva="source /home/mjpauly/repos/wakey_wakey/venv/bin/activate"
-
 # from https://vi.stackexchange.com/a/17963
 # Change directory using vim's built-in netrw directory explorer.
 vd() {
