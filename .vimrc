@@ -1,6 +1,8 @@
 set nocompatible
 filetype off
 
+" VUNDLE ============================================================
+
 " Vundle  (for help do :h vundle)
 " Install with :PluginInstall and update with :PluginUpdate
 set rtp+=~/.vim/bundle/Vundle.vim
@@ -20,9 +22,9 @@ Plugin 'glts/vim-radical'
 Plugin 'tpope/vim-fugitive'
 " Plugin 'szymonmaszke/vimpyter'
 
-" Plugin 'ycm-core/YouCompleteMe'
-
 call vundle#end()
+
+" END VUNDLE ============================================================
 
 filetype indent plugin on
 syntax enable
@@ -83,7 +85,7 @@ nnoremap d# ?\<<C-r>=expand('<cword>')<CR>\>\C<CR>``dgN
 vnoremap ( <Esc>`>a)<Esc>`<i(<Esc>
 vnoremap [ <Esc>`>a]<Esc>`<i[<Esc>
 vnoremap { <Esc>`>a}<Esc>`<i{<Esc>
-vnoremap " <Esc>`>a"<Esc>`<i"<Esc>
+" vnoremap " <Esc>`>a"<Esc>`<i"<Esc>
 vnoremap ' <Esc>`>a'<Esc>`<i'<Esc>
 vnoremap ` <Esc>`>a`<Esc>`<i`<Esc>
 
@@ -103,8 +105,8 @@ nnoremap <leader>] :vsp <CR>:exec("tag ".expand("<cword>"))<CR>
 set splitbelow
 set splitright
 
-" Highlight the end of the max line length
-set cc=81
+" COLOR ============================================================
+
 colorscheme peachpuff  " remember to put highlight commands after this
 
 hi ColorColumn ctermbg=black
@@ -112,10 +114,16 @@ hi Folded ctermbg=black
 hi FoldColumn ctermbg=black
 
 " Vim diff highlighting
-hi DiffAdd ctermfg=black ctermbg=green
+" 256 colors cheat sheet: https://robotmoon.com/256-colors/
+hi DiffAdd ctermfg=black ctermbg=DarkGreen
 hi DiffChange ctermfg=none ctermbg=none
-hi DiffDelete ctermfg=black ctermbg=red
-hi DiffText ctermfg=black ctermbg=yellow
+hi DiffDelete ctermfg=black ctermbg=DarkRed
+hi DiffText ctermfg=black ctermbg=DarkYellow
+
+" Highlight the end of the max line length
+set cc=81
+
+" END COLOR ============================================================
 
 " Vimpyter
 " let g:vimpyter_view_directory = '$HOME/.vimpyter_views'
@@ -204,7 +212,7 @@ vnoremap <leader>f :call ToggleComment()<cr>
 
 " from https://vi.stackexchange.com/a/17963
 " Write directory to temp file
-let s:temporary_directory = "/home/mjpauly/tmp/vimtmpfiles/"
+let s:temporary_directory = $HOME . "/tmp/vimtmpfiles/"
 let s:chdirectory_directory = s:temporary_directory . "chdir"
 let s:chdirectory_file = s:chdirectory_directory . "/chdir"
 if !isdirectory(s:chdirectory_directory)
