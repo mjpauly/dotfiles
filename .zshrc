@@ -1,10 +1,12 @@
 # ==================== Personal additions ====================
 
-source ~/.zpath
+source ~/.zpath  # contains machine-specific path and environment setup commands
+# Must be put here since .zshenv gets sourced before some system environment
+# setup commands which prevents prepending to the front of the path.
 
 alias config='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
 
-# ------- instructions for migrating setup ------- #
+# ------- Instructions for migrating setup ------- #
 
 # use keyboard system prefs to rebind caps-lock to ctrl
 
@@ -40,11 +42,11 @@ alias nb="jupyter notebook"
 
 # alias md="perl ~/Markdown.pl --html4tags"
 alias md="echo 'use commonmark (pip install commonmark), cmark [in] -o [out]'"
-alias grc="/Applications/GNURadio.app/Contents/MacOS/usr/bin/run-grc"
 
 alias sva="source /home/mjpauly/repos/wakey_wakey/venv/bin/activate"
 
 # from https://vi.stackexchange.com/a/17963
+# Change directory using vim's built-in netrw directory explorer.
 vd() {
   local tempfile="$HOME/tmp/vimtmpfiles/chdir/chdir"
   vim .
@@ -56,7 +58,7 @@ vd() {
 }
 
 
-# ==================== zshrc default contents ====================
+# ==================== Ubuntu zshrc default contents ====================
 
 setopt histignorealldups sharehistory
 
@@ -195,3 +197,7 @@ source $ZSH/oh-my-zsh.sh
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
+
+# ==================== After Oh My Zsh ====================
+
+alias gdt="git difftool"
