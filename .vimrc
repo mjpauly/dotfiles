@@ -42,6 +42,10 @@ set expandtab shiftwidth=4 smarttab
 set laststatus=2
 set showcmd
 
+" NETRW ===============================================================
+
+let g:netrw_liststyle=3
+
 " BINDINGS ============================================================
 
 let mapleader = "\<Space>"
@@ -144,8 +148,8 @@ autocmd FileType python setlocal indentkeys-=:
 " Underline the current line for easier cursor visibility
 set cursorline
 
-" highlight ExtraWhitespace ctermbg=darkgreen guibg=darkgreen
-" match ExtraWhitespace /\s\+$/
+highlight ExtraWhitespace ctermbg=darkgreen guibg=darkgreen
+match ExtraWhitespace /\s\+$/
 
 " More involved scripts borrowed from Stack Overflow below ==========================
 

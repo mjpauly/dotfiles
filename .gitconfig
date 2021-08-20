@@ -3,5 +3,6 @@
 	email = mjpauly@mac.com
 [core]
 	editor = vim
+	excludesfile = /Users/matthewpauly/.gitignore
 [diff]
         tool = vimdiff

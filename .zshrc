@@ -45,6 +45,9 @@ alias md="echo 'use commonmark (pip install commonmark), cmark [in] -o [out]'"
 
 alias sva="source /home/mjpauly/repos/wakey_wakey/venv/bin/activate"
 
+# for rustup doc on apple sillicon before it becomes tier1 platform
+alias rustdoc="rustup doc --toolchain=stable-x86_64-apple-darwin"
+
 # from https://vi.stackexchange.com/a/17963
 # Change directory using vim's built-in netrw directory explorer.
 vd() {
@@ -55,6 +58,11 @@ vd() {
       cd -- "$(cat "$tempfile")"
       rm $tempfile
     fi
+}
+
+scanify() {
+    convert -density 300 "$1" -alpha remove -rotate .3 -attenuate 0.15 \
+        +noise Multiplicative +repage -monochrome -compress group4 "$2"
 }
 
 
