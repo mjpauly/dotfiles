@@ -19,6 +19,7 @@ alias config='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
 # echo ".cfg" >> .gitignore             (not needed?)
 # git clone --bare https://github.com/mjpauly/dotfiles.git $HOME/.cfg
 # alias config='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
+# config config --local status.showUntrackedFiles no
 # config checkout
 
 # install vundle:
