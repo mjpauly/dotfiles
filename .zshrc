@@ -10,17 +10,27 @@ alias config='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
 
 # use keyboard system prefs to rebind caps-lock to ctrl
 
-# migrate over dotfiles
-# https://www.atlassian.com/git/tutorials/dotfiles
+# install zsh:                  $ sudo apt install zsh
+# set to default:               $ chsh -s $(which zsh)
+# install omz:
+# sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 
-# install vundle
+# migrate over dotfiles: (https://www.atlassian.com/git/tutorials/dotfiles)
+# echo ".cfg" >> .gitignore             (not needed?)
+# git clone --bare https://github.com/mjpauly/dotfiles.git $HOME/.cfg
+# alias config='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
+# config checkout
+
+# install vundle:
 # git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+# install plugins with:         $ vim +PluginInstall +qall
 
+# install tmux:                 $ sudo apt install tmux
 # install tpm:
 # git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 # Press prefix + I (capital i, as in Install) to fetch the plugin.
 
-# install miniforge
+# install miniforge (mac)
 
 export EDITOR=VIM
 
@@ -42,11 +52,6 @@ alias nb="jupyter notebook"
 
 # alias md="perl ~/Markdown.pl --html4tags"
 alias md="echo 'use commonmark (pip install commonmark), cmark [in] -o [out]'"
-
-alias sva="source /home/mjpauly/repos/wakey_wakey/venv/bin/activate"
-
-# for rustup doc on apple sillicon before it becomes tier1 platform
-alias rustdoc="rustup doc --toolchain=stable-x86_64-apple-darwin"
 
 # from https://vi.stackexchange.com/a/17963
 # Change directory using vim's built-in netrw directory explorer.

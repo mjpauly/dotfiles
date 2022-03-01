@@ -1,3 +1,4 @@
 .cfg
 *.swp
 tags
+.DS_Store

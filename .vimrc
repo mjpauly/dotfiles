@@ -5,12 +5,13 @@ filetype off
 
 " Vundle  (for help do :h vundle)
 " Install with :PluginInstall and update with :PluginUpdate
+" Remove with :PluginList and shift-D on the plugin, and also remove from vimrc
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 Plugin 'VundleVim/Vundle.vim'
 
 " Plugins
-Plugin 'tpope/vim-sensible'
+" Plugin 'tpope/vim-sensible'  " causes reloading of colorscheme after vimrc :(
 Plugin 'christoomey/vim-tmux-navigator'
 Plugin 'ludovicchabant/vim-gutentags'
 Plugin 'tpope/vim-surround'
@@ -20,6 +21,7 @@ Plugin 'tpope/vim-speeddating'
 Plugin 'glts/vim-magnum'  " dependency of radical
 Plugin 'glts/vim-radical'
 Plugin 'tpope/vim-fugitive'
+" Plugin 'JuliaEditorSupport/julia-vim'
 " Plugin 'szymonmaszke/vimpyter'
 
 call vundle#end()
@@ -49,6 +51,8 @@ let g:netrw_liststyle=3
 " BINDINGS ============================================================
 
 let mapleader = "\<Space>"
+
+nnoremap <leader>r :Rex<CR>
 
 " Remap j and k to move to the line directly below/above even with linewrap on
 nnoremap j gj
@@ -191,6 +195,7 @@ let s:comment_map = {
     \   "tcl": '#',
     \   "zsh": '#',
     \   "tmux": '#',
+    \   "julia": '#',
     \ }
 function! ToggleComment()
     if has_key(s:comment_map, &filetype)

@@ -6,3 +6,5 @@
 	excludesfile = /Users/matthewpauly/.gitignore
 [diff]
         tool = vimdiff
+[init]
+	defaultBranch = main
