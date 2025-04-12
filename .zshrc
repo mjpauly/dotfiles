@@ -14,6 +14,8 @@ alias config='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
 # set to default:               $ chsh -s $(which zsh)
 # install omz:
 # sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+# create zpath:                 $ touch ~/.zpath
+# install nvim:                 $ sudo apt install neovim
 
 # migrate over dotfiles: (https://www.atlassian.com/git/tutorials/dotfiles)
 # echo ".cfg" >> .gitignore             (not needed?)
@@ -31,34 +33,74 @@ alias config='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
 # git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 # Press prefix + I (capital i, as in Install) to fetch the plugin.
 
+# install ctags:                $ sudo apt install universal-ctags
+
 # install miniforge (mac)
 
-export EDITOR=VIM
+export EDITOR=nvim
 
-alias vimrc="vim ~/.vimrc"
-alias bashrc="vim ~/.bashrc"
-alias zshrc="vim ~/.zshrc"
-alias zpath="vim ~/.zpath"
-alias tmuxconf="vim ~/.tmux.conf"
+# file relative to repo root
+# usage:
+#       nvim $(rr README.md)                    # open README.md in repo root
+#       nvim @                                  # open repo root
+#       @                                       # cd to repo root
+# '@' cannot be joined with a file path since alias expansion happens on words
+rr() {
+    echo "$(git rev-parse --show-toplevel)/$1"
+}
+alias -g @="\$(rr)"
 
-alias myth="ssh -K myth.stanford.edu"
-alias mythy="ssh -K -Y myth.stanford.edu"
-alias rice="ssh rice.stanford.edu"
-alias kinit2="kinit mjpauly@stanford.edu"
+mcd () {
+    mkdir -p -- "$1" &&
+       cd -P -- "$1"
+}
+
+# alias vimrc="nvim ~/.vimrc"
+alias vimrc="nvim ~/.config/nvim/init.vim"
+alias nvimrc="nvim ~/.config/nvim/init.vim"
+alias bashrc="nvim ~/.bashrc"
+alias zshrc="nvim ~/.zshrc"
+alias zpath="nvim ~/.zpath"
+alias zsh_history="nvim ~/.zsh_history"
+alias tmuxconf="nvim ~/.tmux.conf"
+alias sva="source venv/bin/activate"
+alias ipyconf="nvim ~/.ipython/profile_default/ipython_config.py"
+
+function gpsu { git push --set-upstream origin $(git_current_branch):mjpauly/$(git_current_branch) }
+
+alias watchpdf="open -a Skim"
+
+alias pdl="watch -n 0.5 pio device list"
+alias pru="pio run -t upload"
+alias pdm="pio device monitor"
 
 alias ppath='echo $PATH | tr ":" "\n"'  # pretty-print the path
 
 alias py="ipython"
-alias nb="jupyter notebook"
+
+alias gitbranches="git for-each-ref --sort=committerdate refs/heads/ --format='%(committerdate:short) %(refname:short)'"
 
 # alias md="perl ~/Markdown.pl --html4tags"
 alias md="echo 'use commonmark (pip install commonmark), cmark [in] -o [out]'"
+
+export TERM=xterm-256color
+
+# This used to work, but haven't figured out how to fix it.
+# # Ctrl-w - delete a full WORD (including colon, dot, comma, quotes...)
+# my-backward-kill-word () {
+    # # Add colon, comma, single/double quotes to word chars
+    # local WORDCHARS='*?_-.[]~=/&;!#$%^(){}<>:,"'"'"
+    # zle -f kill # Append to the kill ring on subsequent kills.
+    # zle backward-kill-word
+# }
+# zle -N my-backward-kill-word
+# bindkey '^w' my-backward-kill-word
 
 # from https://vi.stackexchange.com/a/17963
 # Change directory using vim's built-in netrw directory explorer.
 vd() {
   local tempfile="$HOME/tmp/vimtmpfiles/chdir/chdir"
-  vim .
+  nvim .
   test -f "$tempfile" &&
     if [ "$(cat -- "$tempfile")" != "$(echo -n `pwd`)" ]; then
       cd -- "$(cat "$tempfile")"
@@ -71,6 +113,24 @@ scanify() {
         +noise Multiplicative +repage -monochrome -compress group4 "$2"
 }
 
+# from https://jdhao.github.io/2018/10/19/tmux_nvim_true_color/
+colortest() {
+    echo "A smooth gradient between colors indicates true color"
+    awk 'BEGIN{
+    s="/\\/\\/\\/\\/\\"; s=s s s s s s s s;
+    for (colnum = 0; colnum<77; colnum++) {
+        r = 255-(colnum*255/76);
+        g = (colnum*510/76);
+        b = (colnum*255/76);
+        if (g>255) g = 510-g;
+        printf "\033[48;2;%d;%d;%dm", r,g,b;
+        printf "\033[38;2;%d;%d;%dm", 255-r,255-g,255-b;
+        printf "%s\033[0m", substr(s,colnum+1,1);
+    }
+    printf "\n";
+}'
+}
+
 
 # ==================== Ubuntu zshrc default contents ====================
 
@@ -79,14 +139,14 @@ setopt histignorealldups sharehistory
 # Use emacs keybindings even if our EDITOR is set to vi
 # bindkey -e
 
-# Keep 1000000 lines of history within the shell and save it to ~/.zsh_history:
-HISTSIZE=1000000
-SAVEHIST=1000000
+# Keep many lines of history within the shell and save it to ~/.zsh_history:
+HISTSIZE=100000000
+SAVEHIST=100000000
 HISTFILE=~/.zsh_history
 
 # Use modern completion system
 autoload -Uz compinit
-compinit
+compinit -u # ignore insecure directory warnings, because they just won't go away
 
 zstyle ':completion:*' auto-description 'specify: %d'
 zstyle ':completion:*' completer _expand _complete _correct _approximate
@@ -218,3 +278,5 @@ source $ZSH/oh-my-zsh.sh
 # ==================== After Oh My Zsh ====================
 
 alias gdt="git difftool"
+
+. "$HOME/.local/bin/env"

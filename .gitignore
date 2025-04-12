@@ -2,3 +2,6 @@
 *.swp
 tags
 .DS_Store
+.obsidian.vimrc
+venv/
+Session.vim

@@ -2,9 +2,11 @@
 	name = Matthew Pauly
 	email = mjpauly@mac.com
 [core]
-	editor = vim
+	editor = nvim
 	excludesfile = /Users/matthewpauly/.gitignore
 [diff]
-        tool = vimdiff
+        tool = nvimdiff
+[difftool "nvimdiff"]
+    cmd = "nvim -R -d \"$LOCAL\" \"$REMOTE\""
 [init]
 	defaultBranch = main

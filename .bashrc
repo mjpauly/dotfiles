@@ -71,3 +71,4 @@ vd() {
       rm $tempfile
     fi
 }
+. "$HOME/.cargo/env"

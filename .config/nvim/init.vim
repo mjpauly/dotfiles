@@ -1,37 +1,20 @@
-set nocompatible
-filetype off
+" Helpful vim tips:
+"
+" save a session with :mks sess.vim (filename optional)
+" load it back with :source sess.vim or $ nvim -S sess.vim
+"
+" determine where a setting was set with :verbose set expandtab?
 
-" VUNDLE ============================================================
+" use packer.vim for plugin management: https://github.com/wbthomason/packer.nvim
+" add plugins to ~/.config/nvim/lua/plugins.lua
+" install with :PackerInstall
+lua require('plugins')
+lua require('start')
 
-" Vundle  (for help do :h vundle)
-" Install with :PluginInstall and update with :PluginUpdate
-" Remove with :PluginList and shift-D on the plugin, and also remove from vimrc
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-Plugin 'VundleVim/Vundle.vim'
+" Plugin reference:
+" Vim radical: gA show representation of number, crd, crx, cro, crb to change
 
-" Plugins
-" Plugin 'tpope/vim-sensible'  " causes reloading of colorscheme after vimrc :(
-Plugin 'christoomey/vim-tmux-navigator'
-Plugin 'ludovicchabant/vim-gutentags'
-Plugin 'tpope/vim-surround'
-Plugin 'tpope/vim-repeat'
-Plugin 'vim-scripts/argtextobj.vim'
-Plugin 'tpope/vim-speeddating'
-Plugin 'glts/vim-magnum'  " dependency of radical
-Plugin 'glts/vim-radical'
-Plugin 'tpope/vim-fugitive'
-Plugin 'https://github.com/APZelos/blamer.nvim.git'
-Plugin 'morhetz/gruvbox'
-" Plugin 'JuliaEditorSupport/julia-vim'
-" Plugin 'szymonmaszke/vimpyter'
-
-call vundle#end()
-
-" END VUNDLE ============================================================
-
-filetype indent plugin on
-syntax enable
+" filetype indent plugin on
 
 set hlsearch incsearch
 set number ruler
@@ -41,7 +24,7 @@ set ignorecase  " case-insensitive search by default; add \C for case-sentitive
                 " searching anywhere in pattern
 
 " Tab behavior settings
-set expandtab shiftwidth=4 smarttab
+set expandtab shiftwidth=4 tabstop=4 smarttab
 " set tabstop=4 softtabstop=4 " testing with this off - <Tabs> will count as 8 spaces
 " Cause indenting issues for certain filetypes:
 " smartindent autoindent
@@ -51,6 +34,21 @@ set showcmd
 
 set backspace=indent,eol,start
 
+set splitbelow
+set splitright
+
+autocmd FileType rust setlocal textwidth=80
+let g:rust_recommended_style=0 " overrides textwidth to 99 unless this is set
+let g:python_recommended_style = 0 " ftplugin sets expandtab unexpectedly, despite .editorconfig
+
+" Finding files with :fin :sf :tabf
+set path+=~/repos/epsilon/
+set path+=~/repos/epsilon/src/**
+set path+=vbpl/**
+set path+=tests/**
+set path+=scripts/**
+
+
 " NETRW ===============================================================
 
 let g:netrw_liststyle=3
@@ -58,16 +56,20 @@ let g:netrw_liststyle=3
 " VIMDIFF =============================================================
 
 " https://stackoverflow.com/questions/16840433/forcing-vimdiff-to-wrap-lines
-autocmd FilterWritePre * if &diff | setlocal wrap< | endif
+" autocmd FilterWritePre * if &diff | setlocal wrap< | endif  " doesn't work?
+" au VimEnter * if &diff | execute 'windo set wrap' | endif  " also doesn't?
+" lead pipe, but having wrap on all the time by default isn't too bad
+autocmd OptionSet * set wrap
 
 " BLAMER ==============================================================
 
-let g:blamer_enabled = 1
-" let g:blamer_delay = 500
+let g:blamer_enabled = 0
 let g:blamer_relative_time = 1
 let g:blamer_show_in_insert_modes = 0
 
 " BINDINGS ============================================================
+
+" For ideas on what to bind to: https://vim.fandom.com/wiki/Unused_keys
 
 let mapleader = "\<Space>"
 
@@ -123,6 +125,9 @@ inoremap {<CR> {<CR>}<Esc>ko
 nnoremap <leader>l gt
 nnoremap <leader>h gT
 
+" split the line at the current word and join the line with the next
+nnoremap <leader>j i<backspace><CR><Esc>J
+
 " Open definition in new tab and open in a vertical split (C-W C-] for horizontal)
 nnoremap <C-\> :tab split<CR>:exec("tag ".expand("<cword>"))<CR>
 nnoremap <leader>] :vsp <CR>:exec("tag ".expand("<cword>"))<CR>
@@ -133,17 +138,9 @@ nnoremap <leader>p T=wi(<Esc>A)
 
 " END BINDINGS ==================================================================
 
-set splitbelow
-set splitright
-
 " COLOR ============================================================
 
 set termguicolors
-" these are needed for vim but not nvim:
-if !has('nvim')
-    let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
-    let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
-endif
 
 set bg=dark
 let g:gruvbox_contrast_dark='medium'
@@ -152,42 +149,29 @@ colorscheme gruvbox  " remember to put highlight commands after this
 
 " gruvbox colors: https://github.com/morhetz/gruvbox
 hi ColorColumn ctermbg=236
-hi CursorLine ctermbg=236
+" hi CursorLine ctermbg=236
+hi clear CursorLine
+hi CursorLine gui=underline cterm=underline
 hi Folded ctermbg=237
 hi FoldColumn ctermbg=237
 
-" Vim diff highlighting
-" 256 colors cheat sheet: https://robotmoon.com/256-colors/
-" hi DiffAdd ctermfg=black ctermbg=DarkGreen
-" hi DiffChange ctermfg=none ctermbg=none
-" hi DiffDelete ctermfg=black ctermbg=DarkRed
-" hi DiffText ctermfg=black ctermbg=DarkYellow
-
-" Highlight the end of the max line length
-set cc=81
+" Highlight the column after the textwidth
+set cc=+1
+" Underline the current line for easier cursor visibility
+set cursorline
 
 autocmd BufWritePost $MYVIMRC nested source $MYVIMRC
 
 " END COLOR ============================================================
 
-" Vimpyter
-" let g:vimpyter_view_directory = '$HOME/.vimpyter_views'
-" autocmd Filetype ipynb nmap <silent><Leader>b :VimpyterInsertPythonBlock<CR>
-" autocmd Filetype ipynb nmap <silent><Leader>j :VimpyterStartJupyter<CR>
-
 " ctags support $ctags -R *
 " set autochdir
 " set tags=tags;
-set tags=./tags;
-
-set mouse=a
+" set tags=./tags;
 
 " Remove some indent keys
 autocmd FileType python setlocal indentkeys-=<:>
 autocmd FileType python setlocal indentkeys-=:
-
-" Underline the current line for easier cursor visibility
-set cursorline
 
 highlight ExtraWhitespace ctermbg=darkgreen guibg=darkgreen
 match ExtraWhitespace /\s\+$/
@@ -195,7 +179,7 @@ match ExtraWhitespace /\s\+$/
 " More involved scripts borrowed from Stack Overflow below ==========================
 
 " bind leader-c and leader-v to copy to and paste from the system buffer
-" in visual and insert mode respectively
+" in visual and normal mode respectively
 vnoremap <silent> <leader>c :<CR>:let @a=@" \| execute "normal! vgvy" \| let res=system("pbcopy", @") \| let @"=@a<CR>
 " inoremap <leader>v <Esc>:set paste<CR>:r !pbpaste<CR>:set nopaste<CR>
 nnoremap <leader>v :set paste<CR>:r !pbpaste<CR>:set nopaste<CR>
@@ -235,6 +219,11 @@ let s:comment_map = {
     \   "julia": '#',
     \   "scheme": ';',
     \   "bzl": '#',
+    \   "swift": '\/\/',
+    \   "typescript": '\/\/',
+    \   "typescriptreact": '\/\/',
+    \   "kotlin": '\/\/',
+    \   "toml": '#',
     \ }
 function! ToggleComment()
     if has_key(s:comment_map, &filetype)
