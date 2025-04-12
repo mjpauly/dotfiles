@@ -8,6 +8,7 @@
 " use packer.vim for plugin management: https://github.com/wbthomason/packer.nvim
 " add plugins to ~/.config/nvim/lua/plugins.lua
 " install with :PackerInstall
+lua require("config.lazy")
 lua require('plugins')
 lua require('start')
 

@@ -1,37 +1,27 @@
--- install and update with :PackerUpdate (PackerCompile and other cmds don't
--- seem to work)
-
-return require('packer').startup(function(use)
-    -- Packer can manage itself
-    use 'wbthomason/packer.nvim'
-
-    use 'christoomey/vim-tmux-navigator'
-    use 'tpope/vim-surround'
-    use 'tpope/vim-repeat'
-    use 'vim-scripts/argtextobj.vim'
-    use 'tpope/vim-speeddating'
-    use 'glts/vim-magnum'  -- dependency of radical
-    use 'glts/vim-radical'
-    use 'tpope/vim-fugitive'
+return {
+    'christoomey/vim-tmux-navigator',
+    'tpope/vim-surround',
+    'tpope/vim-repeat',
+    'vim-scripts/argtextobj.vim',
+    'tpope/vim-speeddating',
+    'glts/vim-magnum',  -- dependency of radical
+    'glts/vim-radical',
+    'tpope/vim-fugitive',
     -- use 'APZelos/blamer.nvim'
-    use 'morhetz/gruvbox'
+    'morhetz/gruvbox',
 
-    -- Rust LSP setup
+    'lewis6991/gitsigns.nvim', -- sidebar indication of git changes
 
-    use 'neovim/nvim-lspconfig'
+    -- lsp related below
+
+    'neovim/nvim-lspconfig',
 
     -- Visualize lsp progress
-    use({
-        "j-hui/fidget.nvim",
-        config = function()
-            require("fidget").setup()
-        end
-    })
+    "j-hui/fidget.nvim",
 
     -- Autocompletion framework
-    -- -- [[
-    use("hrsh7th/nvim-cmp")
-    use({
+    "hrsh7th/nvim-cmp",
+    {
         -- cmp LSP completion
         "hrsh7th/cmp-nvim-lsp",
         -- cmp Snippet completion
@@ -39,15 +29,17 @@ return require('packer').startup(function(use)
         -- cmp Path completion
         "hrsh7th/cmp-path",
         "hrsh7th/cmp-buffer",
-        after = { "hrsh7th/nvim-cmp" },
-        requires = { "hrsh7th/nvim-cmp" },
-    })
+        dependencies = { "hrsh7th/nvim-cmp" },
+    },
     -- See hrsh7th other plugins for more great completion sources!
     -- Snippet engine
-    use('hrsh7th/vim-vsnip')
-    -- ]]--
+    'hrsh7th/vim-vsnip',
     -- Adds extra functionality over rust analyzer
-    use("simrat39/rust-tools.nvim")
+    {
+        'mrcjkb/rustaceanvim',
+        version = '^6', -- Recommended
+        lazy = false, -- This plugin is already lazy
+    },
 
     -- Optional
     -- use("nvim-lua/popup.nvim")
@@ -56,14 +48,10 @@ return require('packer').startup(function(use)
 
     -- eslint setup for typescript
     -- more info: https://github.com/MunifTanjim/eslint.nvim
-    use('nvim-lua/plenary.nvim')
-    use('jose-elias-alvarez/null-ls.nvim')
-    use('MunifTanjim/eslint.nvim')
-    use('MunifTanjim/prettier.nvim')
+    -- disabled 2025-04-11 after upgrading to nvim 0.11.0
+    -- 'nvim-lua/plenary.nvim',
+    -- 'jose-elias-alvarez/null-ls.nvim',
+    -- 'MunifTanjim/eslint.nvim',
+    -- 'MunifTanjim/prettier.nvim',
 
-    -- sidebar indication of git changes
-    use('lewis6991/gitsigns.nvim')
-
-end)
-
-
+}

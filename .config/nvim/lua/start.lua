@@ -1,3 +1,6 @@
+require('gitsigns').setup()
+require('fidget').setup()
+
 -- Set completeopt to have a better completion experience
 -- :help completeopt
 -- menuone: popup even when there's only one match
@@ -59,47 +62,14 @@ local function on_attach(client, buffer)
     })
 end
 
--- Configure LSP through rust-tools.nvim plugin.
--- rust-tools will configure and enable certain LSP features for us.
--- See https://github.com/simrat39/rust-tools.nvim#configuration
-local opts = {
-    tools = {
-        runnables = {
-            use_telescope = true,
-        },
-        inlay_hints = {
-            auto = true,
-            only_current_line = true,
-            show_parameter_hints = false,
-            -- parameter_hints_prefix = "",
-            -- other_hints_prefix = "",
-        },
-    },
-
-    -- all the opts to send to nvim-lspconfig
-    -- these override the defaults set by rust-tools.nvim
-    -- see https://github.com/neovim/nvim-lspconfig/blob/master/CONFIG.md#rust_analyzer
+vim.g.rustaceanvim = {
     server = {
-        -- on_attach is a callback called when the language server attachs to the buffer
         on_attach = on_attach,
-        settings = {
-            -- to enable rust-analyzer settings visit:
-            -- https://github.com/rust-analyzer/rust-analyzer/blob/master/docs/user/generated_config.adoc
-            ["rust-analyzer"] = {
-                -- enable clippy on save
-                checkOnSave = {
-                    command = "clippy",
-                },
-            },
-        },
     },
 }
 
-require("rust-tools").setup(opts)
-
 -- Setup Completion
 -- See https://github.com/hrsh7th/nvim-cmp#basic-configuration
--- --[[
 local cmp = require("cmp")
 cmp.setup({
     preselect = cmp.PreselectMode.None,
@@ -136,13 +106,49 @@ cmp.setup({
         { name = "buffer" },
     },
 })
--- ]]--
+
+
+-- pyright setup
+
+local lspconfig = require("lspconfig")
+local cmp_nvim_lsp = require("cmp_nvim_lsp")
+
+local capabilities = cmp_nvim_lsp.default_capabilities()
+
+lspconfig.pyright.setup({
+    on_attach = on_attach,
+    capabilities = capabilities,
+})
+
+-- format on save for python files using `uv run ruff`, bypasses LSP
+vim.api.nvim_create_autocmd("BufWritePre", {
+    pattern = "*.py",
+    callback = function(args)
+        local buf = args.buf
+        local filepath = vim.api.nvim_buf_get_name(buf)
+        local input = table.concat(vim.api.nvim_buf_get_lines(buf, 0, -1, false), "\n")
+
+        -- Run ruff format synchronously
+        local output = vim.fn.system({
+            "uv", "run", "ruff", "format", "--stdin-filename", filepath, "-"
+        }, input)
+
+        local success = vim.v.shell_error == 0
+        if success then
+            local formatted = vim.split(output, "\n", { plain = true })
+            vim.api.nvim_buf_set_lines(buf, 0, -1, false, formatted)
+        else
+            vim.notify("ruff format failed:\n" .. output, vim.log.levels.ERROR)
+        end
+    end,
+})
+
 
 -- eslint setup for typescript
 -- more info: https://github.com/MunifTanjim/eslint.nvim
 -- also: https://dev.to/craftzdog/my-neovim-setup-for-react-typescript-tailwind-css-etc-58fb
 -- --[[
-local null_ls = require("null-ls")
+-- local null_ls = require("null-ls")  -- disabled after nvim 0.11.0 upgrade
 
 --[[
 -- for format on save (not using prettier for now)
@@ -151,7 +157,8 @@ local event = "BufWritePre" -- or "BufWritePost"
 local async = event == "BufWritePost"
 ]]--
 
-null_ls.setup({
+--[[
+null_ls.setup({  -- disabled after nvim 0.11.0 upgrade
   sources = {
     null_ls.builtins.diagnostics.eslint.with({  -- or eslint_d
       diagnostics_format = '[eslint] #{m}\n(#{c})'
@@ -174,9 +181,10 @@ null_ls.setup({
     end
   end,
   ]]--
-})
+-- })
 
-local eslint = require("eslint")
+--[[
+local eslint = require("eslint")  -- disabled after nvim 0.11.0 upgrade
 eslint.setup({
   bin = 'eslint', -- or `eslint_d`
   code_actions = {
@@ -196,19 +204,22 @@ eslint.setup({
     run_on = "type", -- or `save`
   },
 })
--- ]]--
+]]--
 
-local nvim_lsp = require("lspconfig")
+--[[  -- disabled after nvim 0.11.0 upgrade
+-- local nvim_lsp = require("lspconfig")
 -- TypeScript LSP
 nvim_lsp.tsserver.setup {
   on_attach = on_attach,
   filetypes = { "typescript", "typescriptreact", "typescript.tsx" },
   cmd = { "typescript-language-server", "--stdio" }
 }
+]]
 
 -- prettier, run with :Prettier
 -- currently the rules conflict with eslint, kinda annoying
-require("prettier").setup {
+--[[
+require("prettier").setup {  -- disabled after nvim 0.11.0 upgrade
   bin = 'prettierd',
   filetypes = {
     "css",
@@ -221,5 +232,4 @@ require("prettier").setup {
     "less"
   }
 }
-
-require('gitsigns').setup()
+]]
