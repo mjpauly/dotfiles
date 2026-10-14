@@ -7,6 +7,8 @@
 [diff]
         tool = nvimdiff
 [difftool "nvimdiff"]
-    cmd = "nvim -R -d \"$LOCAL\" \"$REMOTE\""
+    cmd = "nvim -d \"$LOCAL\" \"$REMOTE\""
 [init]
 	defaultBranch = main
+[pull]
+	ff = only

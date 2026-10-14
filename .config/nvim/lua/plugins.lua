@@ -1,5 +1,12 @@
 return {
-    'christoomey/vim-tmux-navigator',
+    {
+        'christoomey/vim-tmux-navigator',
+        init = function()
+            -- Mappings are defined in plugin/mru_navigate.lua, which resolves
+            -- ambiguous moves by most-recently-visited window (like tmux).
+            vim.g.tmux_navigator_no_mappings = 1
+        end,
+    },
     'tpope/vim-surround',
     'tpope/vim-repeat',
     'vim-scripts/argtextobj.vim',
@@ -40,6 +47,39 @@ return {
         version = '^6', -- Recommended
         lazy = false, -- This plugin is already lazy
     },
+
+    {
+        "ibhagwan/fzf-lua",
+        -- optional for icon support
+        -- dependencies = { "nvim-tree/nvim-web-devicons" },
+        -- or if using mini.icons/mini.nvim
+        -- dependencies = { "echasnovski/mini.icons" },
+        opts = {}
+    },
+
+    {
+        "pmizio/typescript-tools.nvim",
+        dependencies = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" },
+        opts = {},
+    },
+
+    {
+        "nvim-treesitter/nvim-treesitter",
+        build = ":TSUpdate"
+    },
+
+    {
+        "lukas-reineke/indent-blankline.nvim",
+        main = "ibl",
+        ---@module "ibl"
+        ---@type ibl.config
+        opts = {},
+    },
+
+    {
+        "https://gitlab.com/HiPhish/rainbow-delimiters.nvim",
+    },
+
 
     -- Optional
     -- use("nvim-lua/popup.nvim")

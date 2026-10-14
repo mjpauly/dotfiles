@@ -37,8 +37,8 @@ set hlsearch incsearch
 set number ruler
 set wrap linebreak
 
-set ignorecase  " case-insensitive search by default; add \C for case-sentitive
-                " searching anywhere in pattern
+set smartcase  " case-insensitive search by default; add \C for case-sentitive
+               " searching anywhere in pattern
 
 " Tab behavior settings
 set expandtab shiftwidth=4 smarttab

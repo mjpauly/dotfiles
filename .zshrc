@@ -12,8 +12,6 @@ alias config='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
 
 # install zsh:                  $ sudo apt install zsh
 # set to default:               $ chsh -s $(which zsh)
-# install omz:
-# sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 # create zpath:                 $ touch ~/.zpath
 # install nvim:                 $ sudo apt install neovim
 
@@ -39,6 +37,10 @@ alias config='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
 
 export EDITOR=nvim
 
+autoload -Uz colors && colors
+setopt PROMPT_SUBST
+PROMPT='%(?:%{$fg_bold[green]%}➜ :%{$fg_bold[red]%}➜ )%{$fg[cyan]%}%c%{$reset_color%} '
+
 # file relative to repo root
 # usage:
 #       nvim $(rr README.md)                    # open README.md in repo root
@@ -55,6 +57,19 @@ mcd () {
        cd -P -- "$1"
 }
 
+# Directory shortcuts (like oh-my-zsh)
+alias -g ...='../..'
+alias -g ....='../../..'
+alias -g .....='../../../..'
+alias -g ......='../../../../..'
+
+alias -- -='cd -'
+alias ~='cd ~'
+
+setopt auto_cd auto_pushd pushd_ignore_dups pushd_minus
+alias d='dirs -v | head -10'
+for i in {1..9}; do alias $i="cd -$i"; done
+
 # alias vimrc="nvim ~/.vimrc"
 alias vimrc="nvim ~/.config/nvim/init.vim"
 alias nvimrc="nvim ~/.config/nvim/init.vim"
@@ -65,8 +80,18 @@ alias zsh_history="nvim ~/.zsh_history"
 alias tmuxconf="nvim ~/.tmux.conf"
 alias sva="source venv/bin/activate"
 alias ipyconf="nvim ~/.ipython/profile_default/ipython_config.py"
+alias tsb="tmux show-buffer | pbcopy"
+alias gdt="git difftool"
 
-function gpsu { git push --set-upstream origin $(git_current_branch):mjpauly/$(git_current_branch) }
+repopath() {
+    # Return the full paths to the files produced by the specified repository rule
+    # Usage: `repopath "@requirements//:requirements_lock.txt"`
+    echo "$(bazel info output_base 2>/dev/null)/$(bazel cquery $1 --output=files 2>/dev/null)"
+}
+
+# global zsh function to push branch to remote with 'mjpauly/' prefix.
+# commented out in favor of using direnv with `PATH_add ~/.local/gpsu` in .envrc files
+# git push --set-upstream origin "$(git branch --show-current):mjpauly/$(git branch --show-current)"
 
 alias watchpdf="open -a Skim"
 
@@ -134,10 +159,21 @@ colortest() {
 
 # ==================== Ubuntu zshrc default contents ====================
 
-setopt histignorealldups sharehistory
+# incappendhistory: add history during sessions but don't share between sessions
+# hist_ignore_dups: don't add a command if it matches the immediately preceding one
+# extended_history: record a timestamp and duration with the command
+setopt incappendhistory hist_ignore_dups extended_history
 
 # Use emacs keybindings even if our EDITOR is set to vi
-# bindkey -e
+bindkey -e
+
+# History substring search with up/down arrows
+autoload -U up-line-or-beginning-search
+autoload -U down-line-or-beginning-search
+zle -N up-line-or-beginning-search
+zle -N down-line-or-beginning-search
+bindkey "^[[A" up-line-or-beginning-search    # Up arrow
+bindkey "^[[B" down-line-or-beginning-search  # Down arrow
 
 # Keep many lines of history within the shell and save it to ~/.zsh_history:
 HISTSIZE=100000000
@@ -166,117 +202,14 @@ zstyle ':completion:*' verbose true
 zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#)*=0=01;31'
 zstyle ':completion:*:kill:*' command 'ps -u $USER -o pid,%cpu,tty,cputime,cmd'
 
+# ==================== After ====================
 
-# ==================== Oh My Zsh ====================
-
-# If you come from bash you might have to change your $PATH.
-# export PATH=$HOME/bin:/usr/local/bin:$PATH
-
-# Path to your oh-my-zsh installation.
-export ZSH="$HOME/.oh-my-zsh"
-
-# Set name of the theme to load --- if set to "random", it will
-# load a random theme each time oh-my-zsh is loaded, in which case,
-# to know which specific one was loaded, run: echo $RANDOM_THEME
-# See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
-ZSH_THEME="robbyrussell"
-# ZSH_THEME="agnoster"
-
-# Set list of themes to pick from when loading at random
-# Setting this variable when ZSH_THEME=random will cause zsh to load
-# a theme from this variable instead of looking in $ZSH/themes/
-# If set to an empty array, this variable will have no effect.
-# ZSH_THEME_RANDOM_CANDIDATES=( "robbyrussell" "agnoster" )
-
-# Uncomment the following line to use case-sensitive completion.
-# CASE_SENSITIVE="true"
-
-# Uncomment the following line to use hyphen-insensitive completion.
-# Case-sensitive completion must be off. _ and - will be interchangeable.
-# HYPHEN_INSENSITIVE="true"
-
-# Uncomment the following line to disable bi-weekly auto-update checks.
-# DISABLE_AUTO_UPDATE="true"
-
-# Uncomment the following line to automatically update without prompting.
-# DISABLE_UPDATE_PROMPT="true"
-
-# Uncomment the following line to change how often to auto-update (in days).
-# export UPDATE_ZSH_DAYS=13
-
-# Uncomment the following line if pasting URLs and other text is messed up.
-# DISABLE_MAGIC_FUNCTIONS="true"
-
-# Uncomment the following line to disable colors in ls.
-# DISABLE_LS_COLORS="true"
-
-# Uncomment the following line to disable auto-setting terminal title.
-# DISABLE_AUTO_TITLE="true"
-
-# Uncomment the following line to enable command auto-correction.
-# ENABLE_CORRECTION="true"
-
-# Uncomment the following line to display red dots whilst waiting for completion.
-# Caution: this setting can cause issues with multiline prompts (zsh 5.7.1 and newer seem to work)
-# See https://github.com/ohmyzsh/ohmyzsh/issues/5765
-# COMPLETION_WAITING_DOTS="true"
-
-# Uncomment the following line if you want to disable marking untracked files
-# under VCS as dirty. This makes repository status check for large repositories
-# much, much faster.
-# DISABLE_UNTRACKED_FILES_DIRTY="true"
-
-# Uncomment the following line if you want to change the command execution time
-# stamp shown in the history command output.
-# You can set one of the optional three formats:
-# "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
-# or set a custom format using the strftime function format specifications,
-# see 'man strftime' for details.
-# HIST_STAMPS="mm/dd/yyyy"
-
-# Would you like to use another custom folder than $ZSH/custom?
-# ZSH_CUSTOM=/path/to/new-custom-folder
-
-# Which plugins would you like to load?
-# Standard plugins can be found in $ZSH/plugins/
-# Custom plugins may be added to $ZSH_CUSTOM/plugins/
-# Example format: plugins=(rails git textmate ruby lighthouse)
-# Add wisely, as too many plugins slow down shell startup.
-plugins=(
-    git
-    colored-man-pages
-)
-
-source $ZSH/oh-my-zsh.sh
-
-# User configuration
-
-# export MANPATH="/usr/local/man:$MANPATH"
-
-# You may need to manually set your language environment
-# export LANG=en_US.UTF-8
-
-# Preferred editor for local and remote sessions
-# if [[ -n $SSH_CONNECTION ]]; then
-#   export EDITOR='vim'
-# else
-#   export EDITOR='mvim'
-# fi
-
-# Compilation flags
-# export ARCHFLAGS="-arch x86_64"
-
-# Set personal aliases, overriding those provided by oh-my-zsh libs,
-# plugins, and themes. Aliases can be placed here, though oh-my-zsh
-# users are encouraged to define aliases within the ZSH_CUSTOM folder.
-# For a full list of active aliases, run `alias`.
-#
-# Example aliases
-# alias zshconfig="mate ~/.zshrc"
-# alias ohmyzsh="mate ~/.oh-my-zsh"
-
-# ==================== After Oh My Zsh ====================
-
-alias gdt="git difftool"
+# Some of these should go in .zpath instead
 
 . "$HOME/.local/bin/env"
+
+[ -f "/Users/matthewpauly/.ghcup/env" ] && . "/Users/matthewpauly/.ghcup/env" # ghcup-envexport DOCKER_HOST=unix:///Users/matthewpauly/.colima/default/docker.sock
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
