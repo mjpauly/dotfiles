@@ -6,6 +6,9 @@ source ~/.zpath  # contains machine-specific path and environment setup commands
 
 alias config='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
 
+# Start nvim so that fugitive can be used with dotfiles
+alias cnvim='GIT_DIR=$HOME/.cfg GIT_WORK_TREE=$HOME nvim'
+
 # ------- Instructions for migrating setup ------- #
 
 # use keyboard system prefs to rebind caps-lock to ctrl

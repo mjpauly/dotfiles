@@ -68,6 +68,28 @@ return {
         build = ":TSUpdate"
     },
 
+    -- In-buffer rendering of markdown tables, headings, code blocks, etc.
+    {
+        "MeanderingProgrammer/render-markdown.nvim",
+        dependencies = { "nvim-treesitter/nvim-treesitter" },
+        ft = { "markdown" },
+        opts = {
+            heading = {
+                -- No line backgrounds (looks like a diff). Rainbow* groups are
+                -- defined in start.lua.
+                backgrounds = {},
+                foregrounds = {
+                    "RainbowRed",
+                    "RainbowYellow",
+                    "RainbowBlue",
+                    "RainbowGreen",
+                    "RainbowViolet",
+                    "RainbowCyan",
+                },
+            },
+        },
+    },
+
     {
         "lukas-reineke/indent-blankline.nvim",
         main = "ibl",

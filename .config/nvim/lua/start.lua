@@ -201,7 +201,7 @@ require("typescript-tools").setup {
 require("nvim-treesitter.configs").setup {
     highlight = { enable = true },
     indent = { enable = true },  -- this is what indent-blankline cares about
-    ensure_installed = { "rust", "python", "typescript", "tsx" }
+    ensure_installed = { "rust", "python", "typescript", "tsx", "markdown", "markdown_inline" }
 }
 
 
